@@ -20,15 +20,13 @@ const register = async ({ name, password, email }) => {
         email
     })
 
-    return newUser._id;
+    return {userId: newUser._id, name: newUser.name, email: newUser.email};
 };
 
 const login = async ({email, password}) => {
     const userExist = await userModel.findOne({
         email: email
     })
-
-    console.log("userExist", userExist);
 
     if(!userExist){
         throw ApiError.forbidden("User Not Found");
@@ -38,8 +36,6 @@ const login = async ({email, password}) => {
         password,
         userExist.password
     )
-
-    // console.log('correctPassword', correctPassword);
 
     if(correctPassword){
         const token = jwt.sign({email, password}, process.env.JWT_SECRET)
