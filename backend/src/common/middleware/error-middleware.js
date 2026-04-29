@@ -10,6 +10,15 @@ const errorHandler = (err, req, res, next) => {
         });
     }
 
+    if (err.name === 'JsonWebTokenError') {
+        return res.status(401).json({
+            success: false,
+            message: err.message
+        });
+    }
+
+
+
     // Handle unknown errors
     return res.status(500).json({
         success: false,
