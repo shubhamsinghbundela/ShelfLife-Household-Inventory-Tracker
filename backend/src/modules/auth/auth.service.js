@@ -38,7 +38,7 @@ const login = async ({email, password}) => {
     )
 
     if(correctPassword){
-        const token = jwt.sign({email, password}, process.env.JWT_SECRET)
+        const token = jwt.sign({userId: userExist._id, email, password}, process.env.JWT_SECRET)
         return token;
     }else{
         throw ApiError.forbidden("Password is invalid");
