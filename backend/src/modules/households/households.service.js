@@ -12,7 +12,7 @@ const createHouseHold = async (req) => {
         createdBy
     })
 
-    return {_id: newHouseHold._id, name: newHouseHold.name, inviteCode: newHouseHold.inviteCode}
+    return {householdId: newHouseHold._id, name: newHouseHold.name, inviteCode: newHouseHold.inviteCode}
 }
 
 const joinHouseHold = async (req) => {
@@ -38,7 +38,7 @@ const joinHouseHold = async (req) => {
 
     await houseHoldExists.save();
 
-    return {name: houseHoldExists.name, members: houseHoldExists.members}
+    return {householdId: houseHoldExists._id, name: houseHoldExists.name, members: houseHoldExists.members}
 }
 
 export {
