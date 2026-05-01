@@ -2,6 +2,7 @@ import express from "express";
 import errorHandler from "./common/middleware/error-middleware.js";
 import authRoute from './modules/auth/auth.routes.js'
 import householdsRoute from './modules/households/households.routes.js'
+import itemsRoute from './modules/items/items.routes.js'
 
 const app = express();
 
