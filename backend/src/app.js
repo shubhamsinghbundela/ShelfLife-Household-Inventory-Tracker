@@ -9,6 +9,7 @@ app.use(express.json());
 
 app.use("/api/auth", authRoute);
 app.use("/api/households", householdsRoute)
+app.use("/api/items", itemsRoute)
 
 app.use(errorHandler)
 
