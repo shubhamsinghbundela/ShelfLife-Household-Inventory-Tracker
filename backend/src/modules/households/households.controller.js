@@ -19,7 +19,27 @@ const joinHouseHold = async (req, res, next) => {
     }
 }
 
+const getAllMembers = async (req, res, next) => {
+    try{
+        const data = await householdService.getAllMembers(req);
+        ApiResponse.ok(res, "All Members", data);
+    } catch (err) {
+        next(err);
+    }
+}
+
+const leaveHouseHold = async (req, res, next) => {
+    try {
+        const data = await householdService.leaveHouseHold(req);
+        ApiResponse.ok(res, "Left Household Successfully", data);
+    } catch (err) {
+        next(err);
+    }
+};
+
 export {
     createHouseHold,
-    joinHouseHold
+    joinHouseHold,
+    getAllMembers,
+    leaveHouseHold
 }
