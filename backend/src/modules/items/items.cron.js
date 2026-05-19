@@ -3,11 +3,10 @@ import { updateItemStatuses } from "./items.service.js";
 import houseHoldModel from "../households/households.model.js";
 import { sendMail } from "../../common/config/email.js";
 
-cron.schedule("0 6 * * *", async () => {
+cron.schedule("* * * * * *", async () => {
   try {
     console.log("cronJob started...");
     const expiringItems = await updateItemStatuses();
-    console.log("expiringItems", expiringItems);
     if (!expiringItems.length) {
       console.log("No expiring items");
       return;
@@ -40,7 +39,6 @@ cron.schedule("0 6 * * *", async () => {
         <ul>${itemsList}</ul>
       `;
 
-      console.log("42");
       // 5. Send email to all members
       for (const email of emails) {
         await sendMail(email, "Items Expiring Soon", html);

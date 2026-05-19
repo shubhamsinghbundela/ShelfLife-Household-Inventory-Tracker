@@ -14,10 +14,6 @@ const transporter = nodemailer.createTransport({
 });
 
 const sendMail = async (to, subject, html) => {
-  console.log("to", to);
-  console.log("subject", subject);
-  console.log("html", html);
-  console.log("process.env.SMTP_FROM_EMAIL", process.env.SMTP_FROM_EMAIL);
   await transporter.sendMail({
     from: `${process.env.SMTP_FROM_EMAIL}`,
     to,
