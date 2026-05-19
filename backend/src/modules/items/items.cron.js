@@ -3,7 +3,7 @@ import { updateItemStatuses } from "./items.service.js";
 import houseHoldModel from "../households/households.model.js";
 import { sendMail } from "../../common/config/email.js";
 
-cron.schedule("* * * * * *", async () => {
+cron.schedule("0 6 * * *", async () => {
   try {
     console.log("cronJob started...");
     const expiringItems = await updateItemStatuses();
