@@ -59,6 +59,7 @@ const updateItemStatuses = async () => {
     today.setHours(0, 0, 0, 0);
 
     const bulkOperations = [];
+    const expiringItems = [];
 
     for (const item of items) {
       const expiry = new Date(item.expiryDate);
@@ -73,6 +74,7 @@ const updateItemStatuses = async () => {
         newStatus = "expired";
       } else if (diffDays <= 3) {
         newStatus = "expiring-soon";
+        expiringItems.push(item);
       }
 
       // Only update if status changed (VERY IMPORTANT OPTIMIZATION)
@@ -89,9 +91,9 @@ const updateItemStatuses = async () => {
     if (bulkOperations.length > 0) {
       await itemsModel.bulkWrite(bulkOperations);
       console.log(`Updated ${bulkOperations.length} items`);
-    } else {
-      console.log("No status updates needed");
     }
+
+    return expiringItems;
   } catch (error) {
     console.error("Cron job failed:", error);
   }
