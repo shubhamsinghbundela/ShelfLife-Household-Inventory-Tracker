@@ -13,12 +13,16 @@ const register = async (req, res, next) => {
 
 const login = async (req, res, next) => {
   try {
-    const data = await authService.login(req.body);
-    ApiResponse.ok(res, "Login Successful", data)
-    
-  } catch(error) {
+    const { accessToken, refreshToken } = await authService.login(req.body);
+    res.cookie("refreshToken", refreshToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+    });
+    ApiResponse.ok(res, "Login Successful", { accessToken });
+  } catch (error) {
     next(error);
   }
-}
+};
 
 export { register, login };
