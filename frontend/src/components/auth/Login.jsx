@@ -13,6 +13,7 @@ import {
 import GoogleIcon from "@mui/icons-material/Google";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
+import { loginUser } from "./api";
 
 export default function Login() {
   const navigate = useNavigate();
@@ -23,11 +24,13 @@ export default function Login() {
     formState: { errors },
   } = useForm();
 
-  const onSubmit = (data) => {
-    console.log("Login Data:", data);
+  const onSubmit = async (data) => {
+    const res = await loginUser(data);
 
-    // TODO: API call here
-    // await axios.post("/login", data);
+    console.log("Login Response:", res);
+    localStorage.setItem("accessToken", res.data.accessToken);
+
+    navigate("/dashboard");
   };
   return (
     <Box

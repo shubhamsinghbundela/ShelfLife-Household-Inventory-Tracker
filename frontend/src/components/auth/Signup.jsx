@@ -11,6 +11,7 @@ import {
 
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
+import { signupUser } from "./api";
 
 export default function Signup() {
   const navigate = useNavigate();
@@ -22,11 +23,12 @@ export default function Signup() {
   } = useForm();
 
   // submit handler
-  const onSubmit = (data) => {
-    console.log("Signup Data:", data);
+  const onSubmit = async (data) => {
+    const res = await signupUser(data);
 
-    // TODO: call API here
-    // await axios.post("/signup", data);
+    if (res.success) {
+      navigate("/");
+    }
   };
 
   return (
