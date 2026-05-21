@@ -21,6 +21,8 @@
   "homepage": "https://github.com/shubhamsinghbundela/ShelfLife-Household-Inventory-Tracker#readme",
   "dependencies": {
     "bcrypt": "^6.0.0",
+    "cookie-parser": "^1.4.7",
+    "cors": "^2.8.6",
     "dns": "^0.2.2",
     "dotenv": "^17.4.2",
     "express": "^5.2.1",

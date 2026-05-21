@@ -1,5 +1,7 @@
 import express from "express";
+import cors from "cors";
 import cron from "node-cron";
+import cookieParser from "cookie-parser";
 import errorHandler from "./common/middleware/error-middleware.js";
 import authRoute from "./modules/auth/auth.routes.js";
 import householdsRoute from "./modules/households/households.routes.js";
@@ -7,6 +9,15 @@ import itemsRoute from "./modules/items/items.routes.js";
 import "./modules/items/items.cron.js";
 
 const app = express();
+
+app.use(
+  cors({
+    origin: "http://localhost:5174",
+    credentials: true,
+  }),
+);
+
+app.use(cookieParser());
 
 app.use(express.json());
 

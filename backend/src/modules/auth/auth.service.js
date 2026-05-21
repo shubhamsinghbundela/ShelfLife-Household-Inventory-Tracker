@@ -5,6 +5,7 @@ import ApiError from "../../common/utils/api-error.js";
 import {
   generateAccessToken,
   generateRefreshToken,
+  verifyRefreshToken,
 } from "../../common/utils/jwt.utils.js";
 
 const register = async ({ name, password, email }) => {
@@ -39,7 +40,7 @@ const login = async ({ email, password }) => {
   const correctPassword = await bcrypt.compare(password, userExist.password);
 
   if (correctPassword) {
-    const accessToken = generateAccessToken({ userId: userExist._id, email });
+    const accessToken = generateAccessToken({ userId: userExist._id });
     const refreshToken = generateRefreshToken({ userId: userExist._id });
     return { accessToken, refreshToken };
   } else {
@@ -47,4 +48,26 @@ const login = async ({ email, password }) => {
   }
 };
 
-export { register, login };
+const refresh = async (token) => {
+  if (!token) {
+    throw ApiError.unauthorized("Refresh token missing");
+  }
+
+  const decoded = verifyRefreshToken(token);
+
+  const userExists = await userModel.findOne({
+    _id: decoded.userId,
+  });
+
+  if (!userExists) {
+    throw ApiError.notFound("User Not found");
+  }
+
+  const accessToken = generateAccessToken({
+    userId: userExists._id,
+  });
+
+  return { accessToken };
+};
+
+export { register, login, refresh };
