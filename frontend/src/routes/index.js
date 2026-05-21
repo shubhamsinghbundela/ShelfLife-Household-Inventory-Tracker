@@ -1,12 +1,18 @@
-import { Login, Dashboard } from "./pages";
+import { lazy } from "react";
 
 export const routes = [
   {
     path: "/",
-    component: Login,
+    component: lazy(() => import("@/components/auth/Login")),
   },
+
+  {
+    path: "/signup",
+    component: lazy(() => import("@/components/auth/Signup")),
+  },
+
   {
     path: "/dashboard",
-    component: Dashboard,
+    component: lazy(() => import("@/components/dashboard/Dashboard")),
   },
 ];

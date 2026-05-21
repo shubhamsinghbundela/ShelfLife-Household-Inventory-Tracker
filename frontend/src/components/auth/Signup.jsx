@@ -5,16 +5,14 @@ import {
   TextField,
   Button,
   Typography,
-  Divider,
   Stack,
   Link,
 } from "@mui/material";
 
-import GoogleIcon from "@mui/icons-material/Google";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 
-export default function Login() {
+export default function Signup() {
   const navigate = useNavigate();
 
   const {
@@ -23,12 +21,14 @@ export default function Login() {
     formState: { errors },
   } = useForm();
 
+  // submit handler
   const onSubmit = (data) => {
-    console.log("Login Data:", data);
+    console.log("Signup Data:", data);
 
-    // TODO: API call here
-    // await axios.post("/login", data);
+    // TODO: call API here
+    // await axios.post("/signup", data);
   };
+
   return (
     <Box
       sx={{
@@ -41,9 +41,25 @@ export default function Login() {
     >
       <Card sx={{ width: 380, p: 2, boxShadow: 5 }}>
         <CardContent>
+          {/* Title */}
+          <Typography variant="h5" textAlign="center" fontWeight={600}>
+            Create Account
+          </Typography>
+
           <form onSubmit={handleSubmit(onSubmit)}>
             {/* Inputs */}
             <Stack spacing={2} mt={3}>
+              <TextField
+                label="Username"
+                type="text"
+                fullWidth
+                {...register("username", {
+                  required: "Username is required",
+                })}
+                error={!!errors.username}
+                helperText={errors.username?.message}
+              />
+
               <TextField
                 label="Email"
                 type="email"
@@ -55,11 +71,10 @@ export default function Login() {
                     message: "Invalid email format",
                   },
                 })}
-                error={Boolean(errors.email)}
+                error={!!errors.email}
                 helperText={errors.email?.message}
               />
 
-              {/* Password */}
               <TextField
                 label="Password"
                 type="password"
@@ -71,7 +86,7 @@ export default function Login() {
                     message: "Password must be at least 6 characters",
                   },
                 })}
-                error={Boolean(errors.password)}
+                error={!!errors.password}
                 helperText={errors.password?.message}
               />
 
@@ -81,29 +96,21 @@ export default function Login() {
                 color="primary"
                 fullWidth
               >
-                Login
+                Create Account
               </Button>
             </Stack>
           </form>
 
-          {/* Divider */}
-          {/* <Divider sx={{ my: 3 }}>OR</Divider> */}
-
-          {/* Google Login */}
-          {/* <Button variant="outlined" fullWidth startIcon={<GoogleIcon />}>
-            Sign in with Google
-          </Button> */}
-
-          {/* Create account */}
+          {/* Login redirect */}
           <Typography variant="body2" textAlign="center" mt={3}>
-            New user?{" "}
+            Already have an account?{" "}
             <Link
               component="button"
-              onClick={() => navigate("/signup")}
+              onClick={() => navigate("/")}
               underline="hover"
               sx={{ color: "#2e7d32", fontWeight: 500 }}
             >
-              Create new account
+              Login
             </Link>
           </Typography>
         </CardContent>
