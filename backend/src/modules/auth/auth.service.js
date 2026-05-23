@@ -8,9 +8,16 @@ import {
   verifyRefreshToken,
 } from "../../common/utils/jwt.utils.js";
 
-const register = async ({ name, password, email }) => {
+const register = async ({
+  firstName,
+  lastName,
+  username,
+  email,
+  phoneNumber,
+  password,
+}) => {
   const userExist = await userModel.findOne({
-    email: email,
+    email,
   });
 
   if (userExist) {
@@ -20,12 +27,22 @@ const register = async ({ name, password, email }) => {
   const hashedPassword = await bcrypt.hash(password, 10);
 
   const newUser = await userModel.create({
-    name,
-    password: hashedPassword,
+    firstName,
+    lastName,
+    username,
     email,
+    phoneNumber,
+    password: hashedPassword,
   });
 
-  return { userId: newUser._id, name: newUser.name, email: newUser.email };
+  return {
+    userId: newUser._id,
+    firstName: newUser.firstName,
+    lastName: newUser.lastName,
+    username: newUser.username,
+    email: newUser.email,
+    phoneNumber: newUser.phoneNumber,
+  };
 };
 
 const login = async ({ email, password }) => {
@@ -42,7 +59,18 @@ const login = async ({ email, password }) => {
   if (correctPassword) {
     const accessToken = generateAccessToken({ userId: userExist._id });
     const refreshToken = generateRefreshToken({ userId: userExist._id });
-    return { accessToken, refreshToken };
+    return {
+      accessToken,
+      refreshToken,
+      user: {
+        userId: userExist._id,
+        firstName: userExist.firstName,
+        lastName: userExist.lastName,
+        username: userExist.username,
+        email: userExist.email,
+        phoneNumber: userExist.phoneNumber,
+      },
+    };
   } else {
     throw ApiError.forbidden("Password is invalid");
   }
