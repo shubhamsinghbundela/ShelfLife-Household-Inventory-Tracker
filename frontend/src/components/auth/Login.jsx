@@ -1,116 +1,118 @@
+import { useForm } from "react-hook-form";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+
 import {
-  Box,
-  Card,
-  CardContent,
-  TextField,
   Button,
+  Dialog,
+  DialogContent,
+  DialogTitle,
+  IconButton,
+  TextField,
   Typography,
-  Divider,
-  Stack,
-  Link,
+  Box,
 } from "@mui/material";
 
-import GoogleIcon from "@mui/icons-material/Google";
-import { useNavigate } from "react-router-dom";
-import { useForm } from "react-hook-form";
+import CloseIcon from "@mui/icons-material/Close";
 import { loginUser } from "./api";
+import { addUser } from "@/store/userSlice";
 
-export default function Login() {
-  const navigate = useNavigate();
-
+const Login = ({ open, handleClose, openSignup }) => {
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
 
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   const onSubmit = async (data) => {
-    const res = await loginUser(data);
-
-    console.log("Login Response:", res);
-    localStorage.setItem("accessToken", res.data.accessToken);
-
-    navigate("/dashboard");
+    try {
+      const res = await loginUser(data);
+      console.log(res.data.user);
+      dispatch(addUser(res.data.user));
+      handleClose();
+    } catch (err) {
+      console.error(err);
+    }
   };
+
   return (
-    <Box
-      sx={{
-        minHeight: "100vh",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        background: "linear-gradient(135deg, #f6f8f6 0%, #e8f5e9 100%)",
-      }}
-    >
-      <Card sx={{ width: 380, p: 2, boxShadow: 5 }}>
-        <CardContent>
-          <form onSubmit={handleSubmit(onSubmit)}>
-            {/* Inputs */}
-            <Stack spacing={2} mt={3}>
-              <TextField
-                label="Email"
-                type="email"
-                fullWidth
-                {...register("email", {
-                  required: "Email is required",
-                  pattern: {
-                    value: /^\S+@\S+\.\S+$/,
-                    message: "Invalid email format",
-                  },
-                })}
-                error={Boolean(errors.email)}
-                helperText={errors.email?.message}
-              />
+    <Dialog open={open} onClose={handleClose} fullWidth maxWidth="xs">
+      <DialogTitle
+        sx={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+        }}
+      >
+        Login
+        <IconButton onClick={handleClose}>
+          <CloseIcon />
+        </IconButton>
+      </DialogTitle>
 
-              {/* Password */}
-              <TextField
-                label="Password"
-                type="password"
-                fullWidth
-                {...register("password", {
-                  required: "Password is required",
-                  minLength: {
-                    value: 6,
-                    message: "Password must be at least 6 characters",
-                  },
-                })}
-                error={Boolean(errors.password)}
-                helperText={errors.password?.message}
-              />
+      <DialogContent>
+        <Box component="form" onSubmit={handleSubmit(onSubmit)}>
+          <TextField
+            margin="dense"
+            label="Email"
+            type="email"
+            fullWidth
+            variant="outlined"
+            {...register("email", {
+              required: "Email is required",
+            })}
+            error={!!errors.email}
+            helperText={errors.email?.message}
+          />
 
-              <Button
-                type="submit"
-                variant="contained"
-                color="primary"
-                fullWidth
-              >
-                Login
-              </Button>
-            </Stack>
-          </form>
+          <TextField
+            margin="dense"
+            label="Password"
+            type="password"
+            fullWidth
+            variant="outlined"
+            {...register("password", {
+              required: "Password is required",
+              minLength: {
+                value: 6,
+                message: "Password must be at least 6 characters",
+              },
+            })}
+            error={!!errors.password}
+            helperText={errors.password?.message}
+          />
 
-          {/* Divider */}
-          {/* <Divider sx={{ my: 3 }}>OR</Divider> */}
-
-          {/* Google Login */}
-          {/* <Button variant="outlined" fullWidth startIcon={<GoogleIcon />}>
-            Sign in with Google
-          </Button> */}
-
-          {/* Create account */}
-          <Typography variant="body2" textAlign="center" mt={3}>
-            New user?{" "}
-            <Link
-              component="button"
-              onClick={() => navigate("/signup")}
-              underline="hover"
-              sx={{ color: "#2e7d32", fontWeight: 500 }}
-            >
-              Create new account
-            </Link>
+          <Typography
+            variant="body2"
+            sx={{
+              mt: 2,
+              cursor: "pointer",
+              color: "primary.main",
+              textAlign: "center",
+            }}
+            onClick={openSignup}
+          >
+            Create new account
           </Typography>
-        </CardContent>
-      </Card>
-    </Box>
+
+          <Box
+            sx={{
+              mt: 3,
+              display: "flex",
+              justifyContent: "center",
+            }}
+          >
+            <Button type="submit" variant="contained">
+              Login
+            </Button>
+          </Box>
+        </Box>
+      </DialogContent>
+    </Dialog>
   );
-}
+};
+
+export default Login;
