@@ -1,23 +1,39 @@
 import jwt from "jsonwebtoken";
 
 const generateAccessToken = (payload) => {
-  return jwt.sign(payload, process.env.JWT_ACCESS_SECRET, {
-    expiresIn: process.env.JWT_ACCESS_EXPIRES_IN || "1m",
-  });
+  try {
+    return jwt.sign(payload, process.env.JWT_ACCESS_SECRET, {
+      expiresIn: process.env.JWT_ACCESS_EXPIRES_IN || "15m",
+    });
+  } catch (error) {
+    throw error;
+  }
 };
 
 const generateRefreshToken = (payload) => {
-  return jwt.sign(payload, process.env.JWT_REFRESH_SECRET, {
-    expiresIn: process.env.JWT_REFRESH_EXPIRES_IN || "6m",
-  });
+  try {
+    return jwt.sign(payload, process.env.JWT_REFRESH_SECRET, {
+      expiresIn: process.env.JWT_REFRESH_EXPIRES_IN || "7d",
+    });
+  } catch (error) {
+    throw error;
+  }
 };
 
 const verifyAccessToken = (token) => {
-  return jwt.verify(token, process.env.JWT_ACCESS_SECRET);
+  try {
+    return jwt.verify(token, process.env.JWT_ACCESS_SECRET);
+  } catch (error) {
+    throw error;
+  }
 };
 
 const verifyRefreshToken = (token) => {
-  return jwt.verify(token, process.env.JWT_REFRESH_SECRET);
+  try {
+    return jwt.verify(token, process.env.JWT_REFRESH_SECRET);
+  } catch (error) {
+    throw error;
+  }
 };
 
 export {

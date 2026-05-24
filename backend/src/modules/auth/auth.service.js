@@ -98,4 +98,29 @@ const refresh = async (token) => {
   return { accessToken };
 };
 
-export { register, login, refresh };
+const getMe = async (userId) => {
+  if (!userId) {
+    throw ApiError.notFound("user not found");
+  }
+
+  const userExist = await userModel.findOne({
+    _id: userId,
+  });
+
+  if (!userExist) {
+    throw ApiError.notFound("User Not found");
+  }
+
+  return {
+    user: {
+      userId: userExist._id,
+      firstName: userExist.firstName,
+      lastName: userExist.lastName,
+      username: userExist.username,
+      email: userExist.email,
+      phoneNumber: userExist.phoneNumber,
+    },
+  };
+};
+
+export { register, login, refresh, getMe };
