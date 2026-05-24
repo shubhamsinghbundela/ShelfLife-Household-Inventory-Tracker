@@ -17,6 +17,7 @@ import { logout } from "./api";
 import { clearTokens } from "@/utils/token";
 import { useNavigate } from "react-router-dom";
 import { removeUser } from "@/store/userSlice";
+import { toast } from "react-toastify";
 
 const pages = ["Products", "Pricing", "Blog"];
 const settings = ["Profile", "Logout"];
@@ -55,6 +56,7 @@ const Navbar = ({ setOpenAuthDialog }) => {
         // remove redux user also
         dispatch(removeUser());
 
+        toast.success("Logout Successful");
         navigate("/");
       } catch (error) {
         console.log(error);

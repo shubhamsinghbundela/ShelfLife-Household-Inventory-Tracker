@@ -6,13 +6,29 @@ import appStore from "@/store/appStore";
 import { routes } from "@/routes";
 import Body from "@/components/main/Body";
 import "@/api/axiosInterceptor";
+import { Box, CircularProgress } from "@mui/material";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function App() {
   return (
     <>
       <Provider store={appStore}>
         <BrowserRouter basename="/">
-          <Suspense fallback={<h1>Loading...</h1>}>
+          <Suspense
+            fallback={
+              <Box
+                sx={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  height: "100vh",
+                }}
+              >
+                <CircularProgress />
+              </Box>
+            }
+          >
             <Routes>
               <Route path="/" element={<Body />}>
                 {routes.map((route) => {
@@ -29,6 +45,8 @@ function App() {
               </Route>
             </Routes>
           </Suspense>
+
+          <ToastContainer />
         </BrowserRouter>
       </Provider>
     </>

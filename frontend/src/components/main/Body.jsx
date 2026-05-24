@@ -5,6 +5,7 @@ import Navbar from "./Navbar";
 import { getMe } from "./api";
 import { useDispatch } from "react-redux";
 import { addUser } from "@/store/userSlice";
+import { toast } from "react-toastify";
 
 const Body = () => {
   const dispatch = useDispatch();
@@ -13,7 +14,9 @@ const Body = () => {
     try {
       const res = await getMe();
       dispatch(addUser(res.data.user));
-    } catch (error) {}
+    } catch (error) {
+      toast.error(error);
+    }
   };
 
   useEffect(() => {

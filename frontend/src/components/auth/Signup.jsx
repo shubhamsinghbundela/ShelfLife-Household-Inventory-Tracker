@@ -12,6 +12,7 @@ import {
   Typography,
   Box,
 } from "@mui/material";
+import { toast } from "react-toastify";
 
 import { signupUser } from "./api";
 
@@ -26,10 +27,12 @@ const Signup = ({ open, handleClose, openLogin }) => {
     try {
       const res = await signupUser(data);
       if (res.success) {
+        toast.success("Signup Successful");
         handleClose();
         openLogin();
       }
     } catch (err) {
+      toast.error("Signup Failed");
       console.error(err);
     }
   };

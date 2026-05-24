@@ -12,6 +12,7 @@ import {
   Typography,
   Box,
 } from "@mui/material";
+import { toast } from "react-toastify";
 
 import CloseIcon from "@mui/icons-material/Close";
 import { loginUser } from "./api";
@@ -33,8 +34,10 @@ const Login = ({ open, handleClose, openSignup }) => {
       const res = await loginUser(data);
       dispatch(addUser(res.data.user));
       setAccessToken(res.data.accessToken);
+      toast.success("Login Successful");
       handleClose();
     } catch (err) {
+      toast.error("Invalid Credentials");
       console.error(err);
     }
   };
