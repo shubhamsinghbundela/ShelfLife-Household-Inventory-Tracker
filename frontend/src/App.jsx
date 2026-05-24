@@ -5,6 +5,7 @@ import { Provider } from "react-redux";
 import appStore from "@/store/appStore";
 import { routes } from "@/routes";
 import Body from "@/components/main/Body";
+import "@/api/axiosInterceptor";
 
 function App() {
   return (

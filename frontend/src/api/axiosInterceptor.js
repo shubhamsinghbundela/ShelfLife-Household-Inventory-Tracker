@@ -15,32 +15,33 @@ api.interceptors.request.use((config) => {
 
 // RESPONSE INTERCEPTOR
 api.interceptors.response.use(
-  (response) => {
-    return response;
-  },
+  (response) => response,
+
   async (error) => {
     const originalRequest = error.config;
 
-    // if access token expired (401)
     if (error.response?.status === 401 && !originalRequest._retry) {
       originalRequest._retry = true;
-      try {
-        // 👇 cookie automatically sent
-        const data = await refreshToken();
-        const newAccessToken = data.accessToken;
 
-        localStorage.setItem("accessToken", newAccessToken);
+      try {
+        const res = await refreshToken();
+
+        const newAccessToken = res.data.accessToken;
+
+        setAccessToken(newAccessToken);
 
         api.defaults.headers.common.Authorization = `Bearer ${newAccessToken}`;
 
+        originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
+
         return api(originalRequest);
       } catch (error) {
-        localStorage.removeItem("accessToken");
-
-        window.location.href = "/";
+        clearTokens();
 
         return Promise.reject(error);
       }
     }
+
+    return Promise.reject(error);
   },
 );

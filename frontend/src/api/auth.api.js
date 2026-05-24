@@ -1,7 +1,11 @@
-// src/api/auth.api.js
-import api from "./axios";
+import axios from "axios";
 
 export const refreshToken = async () => {
-  const res = await api.post("/auth/refresh"); // 👈 no payload
-  return res.data;
+  return axios.post(
+    `${import.meta.env.VITE_API_URL}/auth/refresh`,
+    {},
+    {
+      withCredentials: true,
+    },
+  );
 };

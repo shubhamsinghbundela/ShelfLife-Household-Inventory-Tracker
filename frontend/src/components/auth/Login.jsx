@@ -16,6 +16,7 @@ import {
 import CloseIcon from "@mui/icons-material/Close";
 import { loginUser } from "./api";
 import { addUser } from "@/store/userSlice";
+import { setAccessToken } from "@/utils/token";
 
 const Login = ({ open, handleClose, openSignup }) => {
   const {
@@ -30,8 +31,8 @@ const Login = ({ open, handleClose, openSignup }) => {
   const onSubmit = async (data) => {
     try {
       const res = await loginUser(data);
-      console.log(res.data.user);
       dispatch(addUser(res.data.user));
+      setAccessToken(res.data.accessToken);
       handleClose();
     } catch (err) {
       console.error(err);

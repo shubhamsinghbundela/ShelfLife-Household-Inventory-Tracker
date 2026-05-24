@@ -12,13 +12,19 @@ import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import AdbIcon from "@mui/icons-material/Adb";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { logout } from "./api";
+import { clearTokens } from "@/utils/token";
+import { useNavigate } from "react-router-dom";
+import { removeUser } from "@/store/userSlice";
 
 const pages = ["Products", "Pricing", "Blog"];
 const settings = ["Profile", "Logout"];
 
 const Navbar = ({ setOpenAuthDialog }) => {
   const user = useSelector((store) => store.user);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
 
@@ -35,6 +41,25 @@ const Navbar = ({ setOpenAuthDialog }) => {
 
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
+  };
+
+  const handleSettingsClick = async (setting) => {
+    handleCloseUserMenu();
+
+    if (setting === "Logout") {
+      try {
+        await logout(); // API call
+
+        clearTokens();
+
+        // remove redux user also
+        dispatch(removeUser());
+
+        navigate("/");
+      } catch (error) {
+        console.log(error);
+      }
+    }
   };
 
   return (
@@ -117,7 +142,10 @@ const Navbar = ({ setOpenAuthDialog }) => {
                   onClose={handleCloseUserMenu}
                 >
                   {settings.map((setting) => (
-                    <MenuItem key={setting} onClick={handleCloseUserMenu}>
+                    <MenuItem
+                      key={setting}
+                      onClick={() => handleSettingsClick(setting)}
+                    >
                       <Typography sx={{ textAlign: "center" }}>
                         {setting}
                       </Typography>
