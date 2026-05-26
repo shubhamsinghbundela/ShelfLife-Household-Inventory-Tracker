@@ -38,7 +38,13 @@ const Signup = ({ open, handleClose, openLogin }) => {
   };
 
   return (
-    <Dialog open={open} onClose={handleClose} fullWidth maxWidth="xs">
+    <Dialog
+      open={open}
+      onClose={handleClose}
+      fullWidth
+      maxWidth="xs"
+      disableScrollLock
+    >
       <DialogTitle
         sx={{
           display: "flex",

@@ -9,6 +9,8 @@ import "@/api/axiosInterceptor";
 import { Box, CircularProgress } from "@mui/material";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import ProtectedRoute from "./routes/ProtectedRoute";
+import PublicOnlyRoute from "./routes/PublicOnlyRoute";
 
 function App() {
   return (
@@ -34,12 +36,24 @@ function App() {
                 {routes.map((route) => {
                   const Component = route.component;
 
+                  // PROTECTED ROUTES
+                  if (route.isProtected) {
+                    return (
+                      <Route key={route.path} element={<ProtectedRoute />}>
+                        <Route path={route.path} element={<Component />} />
+                      </Route>
+                    );
+                  }
+
+                  // PUBLIC ROUTES
                   return (
-                    <Route
-                      key={route.path}
-                      path={route.path}
-                      element={<Component />}
-                    />
+                    <Route key={route.path} element={<PublicOnlyRoute />}>
+                      <Route
+                        key={route.path}
+                        path={route.path}
+                        element={<Component />}
+                      />
+                    </Route>
                   );
                 })}
               </Route>
