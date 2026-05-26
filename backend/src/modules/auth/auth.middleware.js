@@ -13,7 +13,6 @@ const authMiddleware = async (req, res, next) => {
     if (!token) throw ApiError.unauthorized("Not Autheticated");
 
     const decode = verifyAccessToken(token);
-    console.log("decode", decode);
 
     const userExists = await userModel.findOne({
       _id: decode.userId,

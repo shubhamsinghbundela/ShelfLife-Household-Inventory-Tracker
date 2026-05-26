@@ -119,6 +119,7 @@ const getMe = async (userId) => {
       username: userExist.username,
       email: userExist.email,
       phoneNumber: userExist.phoneNumber,
+      householdId: userExist.householdId,
     },
   };
 };

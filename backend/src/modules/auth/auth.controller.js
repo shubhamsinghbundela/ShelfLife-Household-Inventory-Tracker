@@ -39,7 +39,6 @@ const refresh = async (req, res, next) => {
 const getMe = async (req, res, next) => {
   try {
     const userId = req.userId;
-    console.log("userId", userId);
     const { user } = await authService.getMe(userId);
     ApiResponse.ok(res, "User get successfully", { user });
   } catch (error) {
@@ -47,4 +46,13 @@ const getMe = async (req, res, next) => {
   }
 };
 
-export { register, login, refresh, getMe };
+const logout = async (req, res, next) => {
+  try {
+    res.clearCookie("refreshToken");
+    ApiResponse.ok(res, "Logout Success");
+  } catch (error) {
+    next(error);
+  }
+};
+
+export { register, login, refresh, getMe, logout };

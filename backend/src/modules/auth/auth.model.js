@@ -39,6 +39,11 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    householdId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "households",
+      default: null,
+    },
   },
   { timestamps: true },
 );
