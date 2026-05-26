@@ -38,7 +38,6 @@ const JoinWithInviteDialog = ({ open, handleClose, openCreateDialog }) => {
     try {
       const payload = {
         inviteCode: data.inviteCode,
-        householdId: user?.householdId,
       };
 
       const res = await joinHousehold(payload);
@@ -53,7 +52,8 @@ const JoinWithInviteDialog = ({ open, handleClose, openCreateDialog }) => {
       toast.success("Household join successfully");
       handleClose();
     } catch (err) {
-      toast.error("Invalid Invite code");
+      console.log(err);
+      toast.error(err.message);
       console.error(err);
     }
   };

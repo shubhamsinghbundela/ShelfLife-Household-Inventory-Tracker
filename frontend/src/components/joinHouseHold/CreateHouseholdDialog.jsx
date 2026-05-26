@@ -47,7 +47,7 @@ const CreateHouseholdDialog = ({ open, handleClose }) => {
       toast.success("Houshold created successfully");
       handleClose();
     } catch (err) {
-      toast.error("Something went wrong");
+      toast.error(err.message);
       console.error(err);
     }
     console.log(data);
