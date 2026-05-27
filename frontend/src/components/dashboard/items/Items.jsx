@@ -1,10 +1,12 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { Box, Button, Typography } from "@mui/material";
 
 import AddIcon from "@mui/icons-material/Add";
 
-import InventoryTable from "./InventoryTable";
+import InventoryTable from "./InventoryTable.jsx";
+import { toast } from "react-toastify";
+import { getItems } from "./api.js";
 // import AddItemDialog from "./AddItemDialog";
 
 const Items = () => {
@@ -12,22 +14,21 @@ const Items = () => {
 
   const [editingItem, setEditingItem] = useState(null);
 
-  const [items, setItems] = useState([
-    {
-      _id: "1",
-      name: "Milk",
-      category: "dairy",
-      quantity: 2,
-      expiryDate: "2026-05-30",
-    },
-    {
-      _id: "2",
-      name: "Chicken",
-      category: "meat",
-      quantity: 1,
-      expiryDate: "2026-05-27",
-    },
-  ]);
+  const [items, setItems] = useState([]);
+
+  const fetchItems = async () => {
+    try {
+      const res = await getItems();
+
+      setItems(res.data.items);
+    } catch (error) {
+      toast.error(error.response?.data?.message || "Failed to fetch items");
+    }
+  };
+
+  useEffect(() => {
+    fetchItems();
+  }, []);
 
   const handleAddItem = (data) => {
     if (editingItem) {

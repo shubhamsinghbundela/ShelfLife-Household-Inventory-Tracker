@@ -99,4 +99,21 @@ const updateItemStatuses = async () => {
   }
 };
 
-export { createItem, updateItemStatuses };
+const getItems = async (req) => {
+  const householdId = req.householdId;
+
+  const items = await itemsModel
+    .find({
+      householdId,
+    })
+    .populate("addedBy", "name email")
+    .sort({
+      createdAt: -1,
+    });
+
+  return {
+    items,
+  };
+};
+
+export { createItem, updateItemStatuses, getItems };
