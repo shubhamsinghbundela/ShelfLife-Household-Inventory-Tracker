@@ -83,13 +83,22 @@ const DashboardLayout = () => {
           </List>
         </Box>
       </Drawer>
-
       <Box
         component="main"
         sx={{
           flexGrow: 1,
           p: 3,
           bgcolor: "#f5f5f5",
+
+          width: `calc(100% - ${drawerWidth}px)`,
+
+          overflowX: "auto",
+
+          minWidth: 0,
+
+          height: "calc(100vh - 64px)",
+
+          overflowY: "auto",
         }}
       >
         <Outlet context={context} />
