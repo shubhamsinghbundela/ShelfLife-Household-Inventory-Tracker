@@ -88,11 +88,7 @@ const Items = () => {
         </Button>
       </Box>
 
-      <InventoryTable
-        items={items}
-        onDelete={handleDelete}
-        onEdit={handleEdit}
-      />
+      <InventoryTable items={items} items={items} setItems={setItems} />
 
       {/* <AddItemDialog
         open={open}
