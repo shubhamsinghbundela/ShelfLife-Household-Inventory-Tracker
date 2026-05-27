@@ -11,8 +11,13 @@ export const routes = [
   {
     path: "/items",
 
-    component: lazy(() => import("@/components/dashboard/items")),
+    component: lazy(() => import("@/components/dashboard/items/Items")),
 
+    isProtected: true,
+  },
+  {
+    path: "/members",
+    component: lazy(() => import("@/components/dashboard/members/Members")),
     isProtected: true,
   },
 ];

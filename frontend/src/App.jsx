@@ -11,6 +11,7 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import ProtectedRoute from "./routes/ProtectedRoute";
 import PublicOnlyRoute from "./routes/PublicOnlyRoute";
+import DashboardLayout from "./components/layout/DashboardLayout";
 
 function App() {
   return (
@@ -33,29 +34,41 @@ function App() {
           >
             <Routes>
               <Route path="/" element={<Body />}>
-                {routes.map((route) => {
-                  const Component = route.component;
+                {/* PUBLIC ROUTES */}
+                {routes
+                  .filter((route) => !route.isProtected)
+                  .map((route) => {
+                    const Component = route.component;
 
-                  // PROTECTED ROUTES
-                  if (route.isProtected) {
                     return (
-                      <Route key={route.path} element={<ProtectedRoute />}>
+                      <Route key={route.path} element={<PublicOnlyRoute />}>
                         <Route path={route.path} element={<Component />} />
                       </Route>
                     );
-                  }
+                  })}
 
-                  // PUBLIC ROUTES
-                  return (
-                    <Route key={route.path} element={<PublicOnlyRoute />}>
-                      <Route
-                        key={route.path}
-                        path={route.path}
-                        element={<Component />}
-                      />
-                    </Route>
-                  );
-                })}
+                {/* DASHBOARD ROUTES */}
+                <Route
+                  element={
+                    <ProtectedRoute>
+                      <DashboardLayout />
+                    </ProtectedRoute>
+                  }
+                >
+                  {routes
+                    .filter((route) => route.isProtected)
+                    .map((route) => {
+                      const Component = route.component;
+
+                      return (
+                        <Route
+                          key={route.path}
+                          path={route.path}
+                          element={<Component />}
+                        />
+                      );
+                    })}
+                </Route>
               </Route>
             </Routes>
           </Suspense>

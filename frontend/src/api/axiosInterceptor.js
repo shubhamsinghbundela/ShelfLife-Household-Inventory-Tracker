@@ -25,7 +25,6 @@ api.interceptors.response.use(
 
       try {
         const res = await refreshToken();
-        console.log(res);
         const newAccessToken = res.data.data.accessToken;
 
         setAccessToken(newAccessToken);
