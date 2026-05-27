@@ -19,4 +19,14 @@ const getItems = async (req, res, next) => {
   }
 };
 
-export { createItem, getItems };
+const updateItem = async (req, res, next) => {
+  try {
+    const data = await itemService.updateItem(req);
+
+    ApiResponse.ok(res, "Item Updated Successfully", data);
+  } catch (err) {
+    next(err);
+  }
+};
+
+export { createItem, getItems, updateItem };

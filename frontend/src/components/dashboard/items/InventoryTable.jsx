@@ -9,6 +9,8 @@ import { Box, Chip, IconButton, Tooltip, TextField } from "@mui/material";
 
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
+import { toast } from "react-toastify";
+import { updateItem } from "./api";
 
 const getStatus = (expiryDate) => {
   const today = new Date();
@@ -28,7 +30,8 @@ const getStatus = (expiryDate) => {
   return "fresh";
 };
 
-const InventoryTable = ({ items, setItems }) => {
+const InventoryTable = ({ items, fetchItems }) => {
+  console.log("items", items);
   const [validationErrors, setValidationErrors] = useState({});
 
   const columns = useMemo(
@@ -97,6 +100,7 @@ const InventoryTable = ({ items, setItems }) => {
       },
       {
         header: "Status",
+        enableEditing: false,
         Cell: ({ row }) => {
           const status = getStatus(row.original.expiryDate);
 
@@ -118,7 +122,9 @@ const InventoryTable = ({ items, setItems }) => {
     [validationErrors],
   );
 
-  const handleSaveRow = async ({ values, table }) => {
+  const handleSaveRow = async ({ values, table, row }) => {
+    console.log("rows", row);
+    console.log("values", values);
     const errors = validateItem(values);
 
     if (Object.values(errors).some(Boolean)) {
@@ -126,19 +132,32 @@ const InventoryTable = ({ items, setItems }) => {
       return;
     }
 
-    setValidationErrors({});
+    try {
+      setValidationErrors({});
 
-    setItems((prev) =>
-      prev.map((item) => (item._id === values._id ? values : item)),
-    );
+      const payload = {
+        name: values.name,
+        category: values.category,
+        quantity: values.quantity,
+        expiryDate: values.expiryDate,
+      };
 
-    table.setEditingRow(null);
+      await updateItem(row.original._id, payload);
+
+      await fetchItems();
+
+      toast.success("Item updated successfully");
+
+      table.setEditingRow(null);
+    } catch (error) {
+      toast.error(error.response?.data?.message || "Failed to update item");
+    }
   };
 
   const handleDelete = (row) => {
-    if (window.confirm("Are you sure you want to delete this item?")) {
-      setItems((prev) => prev.filter((item) => item._id !== row.original._id));
-    }
+    // if (window.confirm("Are you sure you want to delete this item?")) {
+    //   setItems((prev) => prev.filter((item) => item._id !== row.original._id));
+    // }
   };
 
   const table = useMaterialReactTable({

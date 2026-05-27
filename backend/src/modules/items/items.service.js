@@ -116,4 +116,68 @@ const getItems = async (req) => {
   };
 };
 
-export { createItem, updateItemStatuses, getItems };
+const updateItem = async (req) => {
+  const { itemId } = req.params;
+
+  const { name, category, quantity, expiryDate } = req.body;
+
+  const householdId = req.householdId;
+
+  if (!name || !category || !quantity || !expiryDate) {
+    throw ApiError.badRequest("All fields are required");
+  }
+
+  const item = await itemsModel.findOne({
+    _id: itemId,
+    householdId,
+  });
+
+  if (!item) {
+    throw ApiError.notFound("Item not found");
+  }
+
+  // ===== Status Calculation =====
+
+  const today = new Date();
+  const expiry = new Date(expiryDate);
+
+  today.setHours(0, 0, 0, 0);
+  expiry.setHours(0, 0, 0, 0);
+
+  const diffTime = expiry - today;
+
+  const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+  let status = "fresh";
+
+  if (diffDays < 0) {
+    status = "expired";
+  } else if (diffDays <= 3) {
+    status = "expiring-soon";
+  }
+
+  // ===== Update Item =====
+
+  const updatedItem = await itemsModel.findOneAndUpdate(
+    {
+      _id: itemId,
+      householdId,
+    },
+    {
+      name,
+      category,
+      quantity,
+      expiryDate,
+      status,
+    },
+    {
+      returnDocument: "after",
+    },
+  );
+
+  return {
+    item: updatedItem,
+  };
+};
+
+export { createItem, updateItemStatuses, getItems, updateItem };

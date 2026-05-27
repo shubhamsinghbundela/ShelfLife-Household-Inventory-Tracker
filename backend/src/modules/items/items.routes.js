@@ -7,5 +7,11 @@ const router = Router();
 
 router.post("/", authMiddleware, housholdMiddleware, controller.createItem);
 router.get("/", authMiddleware, housholdMiddleware, controller.getItems);
+router.put(
+  "/:itemId",
+  authMiddleware,
+  housholdMiddleware,
+  controller.updateItem,
+);
 
 export default router;

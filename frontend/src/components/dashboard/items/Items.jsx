@@ -88,7 +88,7 @@ const Items = () => {
         </Button>
       </Box>
 
-      <InventoryTable items={items} items={items} setItems={setItems} />
+      <InventoryTable items={items} fetchItems={fetchItems} />
 
       {/* <AddItemDialog
         open={open}
