@@ -31,7 +31,6 @@ const getStatus = (expiryDate) => {
 };
 
 const InventoryTable = ({ items, fetchItems }) => {
-  console.log("items", items);
   const [validationErrors, setValidationErrors] = useState({});
 
   const columns = useMemo(
@@ -123,8 +122,6 @@ const InventoryTable = ({ items, fetchItems }) => {
   );
 
   const handleSaveRow = async ({ values, table, row }) => {
-    console.log("rows", row);
-    console.log("values", values);
     const errors = validateItem(values);
 
     if (Object.values(errors).some(Boolean)) {
