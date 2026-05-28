@@ -16,11 +16,19 @@ const Items = () => {
 
   const [items, setItems] = useState([]);
 
+  const [pagination, setPagination] = useState({
+    pageIndex: 0,
+    pageSize: 10,
+  });
+
+  const [rowCount, setRowCount] = useState(0);
+
   const fetchItems = async () => {
     try {
-      const res = await getItems();
+      const res = await getItems(pagination.pageIndex + 1, pagination.pageSize);
 
       setItems(res.data.items);
+      setRowCount(res.data.totalItems);
     } catch (error) {
       toast.error(error.response?.data?.message || "Failed to fetch items");
     }
@@ -28,7 +36,7 @@ const Items = () => {
 
   useEffect(() => {
     fetchItems();
-  }, []);
+  }, [pagination.pageIndex, pagination.pageSize]);
 
   const handleAddItem = (data) => {
     if (editingItem) {
@@ -88,7 +96,13 @@ const Items = () => {
         </Button>
       </Box>
 
-      <InventoryTable items={items} fetchItems={fetchItems} />
+      <InventoryTable
+        items={items}
+        fetchItems={fetchItems}
+        pagination={pagination}
+        setPagination={setPagination}
+        rowCount={rowCount}
+      />
 
       {/* <AddItemDialog
         open={open}

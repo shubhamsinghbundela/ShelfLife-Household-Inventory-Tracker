@@ -30,7 +30,13 @@ const getStatus = (expiryDate) => {
   return "fresh";
 };
 
-const InventoryTable = ({ items, fetchItems }) => {
+const InventoryTable = ({
+  items,
+  fetchItems,
+  pagination,
+  setPagination,
+  rowCount,
+}) => {
   const [validationErrors, setValidationErrors] = useState({});
 
   const columns = useMemo(
@@ -167,6 +173,17 @@ const InventoryTable = ({ items, fetchItems }) => {
     columns,
     data: items,
 
+    manualPagination: true,
+
+    rowCount,
+
+    onPaginationChange: setPagination,
+
+    state: {
+      pagination,
+    },
+
+    enablePagination: true,
     enableEditing: true,
 
     editDisplayMode: "row",

@@ -1,8 +1,8 @@
 import api from "@/api/axios.js";
 
 // GET ITEMS
-export const getItems = async () => {
-  const res = await api.get("/items/");
+export const getItems = async (page, limit) => {
+  const res = await api.get(`/items?page=${page}&limit=${limit}`);
   return res.data;
 };
 
