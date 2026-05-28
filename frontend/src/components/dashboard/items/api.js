@@ -12,3 +12,9 @@ export const updateItem = async (itemId, data) => {
 
   return res.data;
 };
+
+export const deleteItem = async (itemId) => {
+  const res = await api.delete(`/items/${itemId}`);
+
+  return res.data;
+};

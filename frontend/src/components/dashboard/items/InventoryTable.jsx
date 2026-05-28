@@ -10,7 +10,7 @@ import { Box, Chip, IconButton, Tooltip, TextField } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { toast } from "react-toastify";
-import { updateItem } from "./api";
+import { updateItem, deleteItem } from "./api";
 
 const getStatus = (expiryDate) => {
   const today = new Date();
@@ -151,10 +151,16 @@ const InventoryTable = ({ items, fetchItems }) => {
     }
   };
 
-  const handleDelete = (row) => {
-    // if (window.confirm("Are you sure you want to delete this item?")) {
-    //   setItems((prev) => prev.filter((item) => item._id !== row.original._id));
-    // }
+  const handleDelete = async (row) => {
+    try {
+      await deleteItem(row.original._id);
+
+      await fetchItems();
+
+      toast.success("Item deleted successfully");
+    } catch (error) {
+      toast.error(error.response?.data?.message || "Failed to delete item");
+    }
   };
 
   const table = useMaterialReactTable({

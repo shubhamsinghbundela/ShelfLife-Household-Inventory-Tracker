@@ -29,4 +29,14 @@ const updateItem = async (req, res, next) => {
   }
 };
 
-export { createItem, getItems, updateItem };
+const deleteItem = async (req, res, next) => {
+  try {
+    const data = await itemService.deleteItem(req);
+
+    ApiResponse.ok(res, "Item Deleted Successfully", data);
+  } catch (err) {
+    next(err);
+  }
+};
+
+export { createItem, getItems, updateItem, deleteItem };

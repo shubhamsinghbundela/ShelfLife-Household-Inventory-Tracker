@@ -13,5 +13,11 @@ router.put(
   housholdMiddleware,
   controller.updateItem,
 );
+router.delete(
+  "/:itemId",
+  authMiddleware,
+  housholdMiddleware,
+  controller.deleteItem,
+);
 
 export default router;

@@ -180,4 +180,28 @@ const updateItem = async (req) => {
   };
 };
 
-export { createItem, updateItemStatuses, getItems, updateItem };
+const deleteItem = async (req) => {
+  const { itemId } = req.params;
+
+  const householdId = req.householdId;
+
+  const item = await itemsModel.findOne({
+    _id: itemId,
+    householdId,
+  });
+
+  if (!item) {
+    throw ApiError.notFound("Item not found");
+  }
+
+  await itemsModel.deleteOne({
+    _id: itemId,
+    householdId,
+  });
+
+  return {
+    itemId,
+  };
+};
+
+export { createItem, updateItemStatuses, getItems, updateItem, deleteItem };
