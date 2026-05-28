@@ -23,9 +23,16 @@ const Items = () => {
 
   const [rowCount, setRowCount] = useState(0);
 
+  const [globalFilter, setGlobalFilter] = useState("");
+  const [debouncedGlobalFilter, setDebouncedGlobalFilter] = useState("");
+
   const fetchItems = async () => {
     try {
-      const res = await getItems(pagination.pageIndex + 1, pagination.pageSize);
+      const res = await getItems(
+        pagination.pageIndex + 1,
+        pagination.pageSize,
+        debouncedGlobalFilter,
+      );
 
       setItems(res.data.items);
       setRowCount(res.data.totalItems);
@@ -35,8 +42,23 @@ const Items = () => {
   };
 
   useEffect(() => {
+    const timeout = setTimeout(() => {
+      setDebouncedGlobalFilter(globalFilter);
+    }, 500);
+
+    return () => clearTimeout(timeout);
+  }, [globalFilter]);
+
+  useEffect(() => {
     fetchItems();
-  }, [pagination.pageIndex, pagination.pageSize]);
+  }, [pagination.pageIndex, pagination.pageSize, debouncedGlobalFilter]);
+
+  useEffect(() => {
+    setPagination((prev) => ({
+      ...prev,
+      pageIndex: 0,
+    }));
+  }, [debouncedGlobalFilter]);
 
   const handleAddItem = (data) => {
     if (editingItem) {
@@ -102,6 +124,8 @@ const Items = () => {
         pagination={pagination}
         setPagination={setPagination}
         rowCount={rowCount}
+        globalFilter={globalFilter}
+        setGlobalFilter={setGlobalFilter}
       />
 
       {/* <AddItemDialog

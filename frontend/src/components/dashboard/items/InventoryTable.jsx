@@ -36,6 +36,8 @@ const InventoryTable = ({
   pagination,
   setPagination,
   rowCount,
+  globalFilter,
+  setGlobalFilter,
 }) => {
   const [validationErrors, setValidationErrors] = useState({});
 
@@ -174,13 +176,16 @@ const InventoryTable = ({
     data: items,
 
     manualPagination: true,
+    manualFiltering: true,
 
     rowCount,
 
     onPaginationChange: setPagination,
+    onGlobalFilterChange: setGlobalFilter,
 
     state: {
       pagination,
+      globalFilter,
     },
 
     enablePagination: true,
