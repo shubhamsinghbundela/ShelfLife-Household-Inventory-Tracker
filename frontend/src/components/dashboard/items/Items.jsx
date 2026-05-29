@@ -7,7 +7,7 @@ import AddIcon from "@mui/icons-material/Add";
 import InventoryTable from "./InventoryTable.jsx";
 import { toast } from "react-toastify";
 import { getItems } from "./api.js";
-// import AddItemDialog from "./AddItemDialog";
+import AddItemDialog from "./AddItemDialog.jsx";
 
 const Items = () => {
   const [open, setOpen] = useState(false);
@@ -128,12 +128,11 @@ const Items = () => {
         setGlobalFilter={setGlobalFilter}
       />
 
-      {/* <AddItemDialog
+      <AddItemDialog
         open={open}
         handleClose={() => setOpen(false)}
-        onSubmit={handleAddItem}
-        editingItem={editingItem}
-      /> */}
+        fetchItems={fetchItems}
+      />
     </Box>
   );
 };

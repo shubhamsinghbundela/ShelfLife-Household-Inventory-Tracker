@@ -1,5 +1,11 @@
 import api from "@/api/axios.js";
 
+export const createItem = async (data) => {
+  const res = await api.post("/items", data);
+
+  return res.data;
+};
+
 // GET ITEMS
 export const getItems = async (page, limit, search) => {
   const res = await api.get(
