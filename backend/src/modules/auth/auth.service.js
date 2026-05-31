@@ -69,6 +69,7 @@ const login = async ({ email, password }) => {
         username: userExist.username,
         email: userExist.email,
         phoneNumber: userExist.phoneNumber,
+        householdId: userExist.householdId,
       },
     };
   } else {
