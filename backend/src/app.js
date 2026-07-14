@@ -21,9 +21,9 @@ app.use(cookieParser());
 
 app.use(express.json());
 
-app.use("/auth", authRoute);
-app.use("/households", householdsRoute);
-app.use("/items", itemsRoute);
+app.use("/api/auth", authRoute);
+app.use("/api/households", householdsRoute);
+app.use("/api/items", itemsRoute);
 
 app.use(errorHandler);
 
