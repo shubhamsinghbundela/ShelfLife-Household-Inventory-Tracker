@@ -107,6 +107,7 @@ const AddItemDialog = ({ open, handleClose, fetchItems }) => {
 
       toast.success("Product fetched successfully");
     } catch (error) {
+      console.error(error);
       toast.error("Failed to fetch product");
     } finally {
       setLoadingBarcode(false);
@@ -323,6 +324,7 @@ const AddItemDialog = ({ open, handleClose, fetchItems }) => {
             stopStream={stopStream}
             delay={500}
             onError={(error) => {
+              console.error(error);
               toast.error("Failed to access camera");
             }}
             onUpdate={(err, result) => {

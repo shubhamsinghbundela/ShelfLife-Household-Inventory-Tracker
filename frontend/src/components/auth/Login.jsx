@@ -1,6 +1,5 @@
 import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
 
 import {
   Button,
@@ -27,7 +26,6 @@ const Login = ({ open, handleClose, openSignup }) => {
   } = useForm();
 
   const dispatch = useDispatch();
-  const navigate = useNavigate();
 
   const onSubmit = async (data) => {
     try {

@@ -89,7 +89,7 @@ const InventoryTable = ({
       {
         accessorKey: "expiryDate",
         header: "Expiry Date",
-        Edit: ({ cell, column, row, table }) => (
+        Edit: ({ cell, column, row }) => (
           <TextField
             type="date"
             value={cell.getValue()?.split("T")[0] || ""}
