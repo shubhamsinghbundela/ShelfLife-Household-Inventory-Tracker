@@ -1,6 +1,5 @@
 import express from "express";
 import cors from "cors";
-import cron from "node-cron";
 import cookieParser from "cookie-parser";
 import errorHandler from "./common/middleware/error-middleware.js";
 import authRoute from "./modules/auth/auth.routes.js";

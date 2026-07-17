@@ -1,4 +1,3 @@
-import jwt from "jsonwebtoken";
 import userModel from "../auth/auth.model.js";
 import ApiError from "../../common/utils/api-error.js";
 import { verifyAccessToken } from "../../common/utils/jwt.utils.js";
