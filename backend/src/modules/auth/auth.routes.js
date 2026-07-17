@@ -5,7 +5,7 @@ import authMiddleware from "./auth.middleware.js";
 const router = Router();
 
 router.get("/health", (req, res) => {
-  res.send("Auth Route is working");
+  res.send("CI/CD working");
 });
 router.post("/register", controller.register);
 router.post("/login", controller.login);
