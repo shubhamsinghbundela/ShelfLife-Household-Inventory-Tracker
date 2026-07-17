@@ -1,3 +1,5 @@
+Understanding Purpose
+
 name of your workflow. In the GitHub Actions tab, you will see ESLint CI.
 name: ESLint CI 
 
