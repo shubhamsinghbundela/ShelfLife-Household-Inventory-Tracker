@@ -21,5 +21,9 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           passphrase: ${{ secrets.SSH_PASSPHRASE }}
           script: |
-            cd /root/ShelfLife-Household-Inventory-Tracker
-            ./deploy.sh
+            export NVM_DIR="$HOME/.nvm"
+            source "$NVM_DIR/nvm.sh"
+            cd /root/ShelfLife-Household-Inventory-Tracker/backend
+            git pull origin main
+            npm install
+            pm2 restart backend
