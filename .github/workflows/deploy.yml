@@ -20,8 +20,4 @@ jobs:
           username: root
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           passphrase: ${{ secrets.SSH_PASSPHRASE }}
-          script: |
-            cd /root/ShelfLife-Household-Inventory-Tracker/backend
-            git pull origin main
-            npm install
-            pm2 restart backend
+          script: ./deploy.sh
