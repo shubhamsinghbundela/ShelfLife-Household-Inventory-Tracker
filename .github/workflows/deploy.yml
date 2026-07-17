@@ -1,0 +1,27 @@
+name: Deploy to EC2
+
+"on":
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v7
+
+      - name: Deploy using SSH
+        uses: appleboy/ssh-action@v1
+        with:
+          host: 168.144.69.118
+          username: root
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          passphrase: ${{ secrets.SSH_PASSPHRASE }}
+          script: |
+            cd /home/root/ShelfLife-Household-Inventory-Tracker/backend
+            git pull origin main
+            npm install
+            pm2 restart backend
