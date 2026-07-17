@@ -187,8 +187,6 @@ const InventoryTable = ({
       pagination,
       globalFilter,
     },
-
-    enablePagination: true,
     enableEditing: true,
 
     editDisplayMode: "row",
